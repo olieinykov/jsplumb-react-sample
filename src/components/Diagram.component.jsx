@@ -21,14 +21,14 @@ import {
   PlainArrowOverlay,
   newInstance,
 } from "@jsplumbtoolkit/browser-ui";
-import NodeComponent from "./Node.component";
+import Node from "./Node.component";
 
 const Diagram = () => {
   const surfaceComponent = useRef(null);
   const surface = useRef(null);
 
   const toolkit = newInstance({
-    portDataProperty: "columns",
+    portDataProperty: "ports",
     beforeConnect: (source, target) => {
       return (
         isPort(source) &&
@@ -43,7 +43,7 @@ const Diagram = () => {
     nodes: {
       [DEFAULT]: {
         jsx: (ctx) => {
-          return <NodeComponent ctx={ctx} />;
+          return <Node ctx={ctx} />;
         },
         events: {
           [EVENT_TAP]: (params) => {
@@ -98,13 +98,14 @@ const Diagram = () => {
   };
 
   const renderOptions = {
+    logicalPorts: true,
     plugins: [
       {
         type: LassoPlugin.type,
         options: {
-          invert: true
-        }
-      }
+          invert: true,
+        },
+      },
     ],
     layout: {
       type: AbsoluteLayout.type,
@@ -125,20 +126,20 @@ const Diagram = () => {
   };
 
   return (
-      <div className="jtk-demo-canvas">
-        <SurfaceProvider>
-          <SurfaceComponent
-            renderOptions={renderOptions}
-            toolkit={toolkit}
-            viewOptions={viewOptions}
-            ref={surfaceComponent}
-            url="/data.json"
-          >
-            <ControlsComponent />
-            <MiniviewComponent />
-          </SurfaceComponent>
-        </SurfaceProvider>
-      </div>
+    <div className="jtk-demo-canvas">
+      <SurfaceProvider>
+        <SurfaceComponent
+          renderOptions={renderOptions}
+          toolkit={toolkit}
+          viewOptions={viewOptions}
+          ref={surfaceComponent}
+          url="/data.json"
+        >
+          <ControlsComponent />
+          <MiniviewComponent />
+        </SurfaceComponent>
+      </SurfaceProvider>
+    </div>
   );
 };
 
